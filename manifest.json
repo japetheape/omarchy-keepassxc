@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "id": "io.github.japetheape.keepassxc",
+  "name": "KeePassXC",
+  "version": "0.4.0",
+  "author": "Jaap van der Meer",
+  "license": "MIT",
+  "description": "Secure KeePassXC status and native tray actions in the Omarchy bar.",
+  "kinds": [
+    "bar-widget"
+  ],
+  "entryPoints": {
+    "barWidget": "Panel.qml"
+  },
+  "barWidget": {
+    "displayName": "KeePassXC",
+    "description": "Launch or focus KeePassXC and use its native tray actions without accessing password data.",
+    "category": "Security",
+    "allowMultiple": false,
+    "defaultSection": "right",
+    "defaults": {},
+    "schema": []
+  }
+}

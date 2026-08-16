@@ -1,0 +1,30 @@
+const assert = require("node:assert/strict")
+const model = require("./Model.js")
+
+assert.equal(model.isKeePassXCItem({ id: "KeePassXC" }), true)
+assert.equal(model.isKeePassXCItem({ title: "KeePass XC" }), true)
+assert.equal(model.isKeePassXCItem({ id: "dropbox" }), false)
+assert.equal(model.isKeePassXCToplevel({ appId: "org.keepassxc.KeePassXC" }), true)
+assert.equal(model.isKeePassXCToplevel({ appId: "chromium" }), false)
+
+assert.equal(model.stateForItem(null), "stopped")
+assert.equal(model.stateForItem({ id: "keepassxc", icon: "keepassxc-unlocked" }), "unlocked")
+assert.equal(model.stateForItem({ id: "keepassxc", icon: "keepassxc-locked" }), "locked")
+assert.equal(model.stateForItem({ id: "keepassxc", tooltipTitle: "Unlocked vault [Locked]" }), "running")
+assert.equal(model.stateForItem({ id: "keepassxc", tooltipTitle: "[Locked] - KeePassXC" }), "locked")
+assert.equal(model.stateForItem({ id: "keepassxc", tooltipTitle: "Unlocked vault - KeePassXC" }), "unlocked")
+assert.equal(model.stateForItem({ id: "keepassxc" }), "running")
+assert.equal(model.stateForMenu([{ text: "Lock Databases", enabled: true }]), "unlocked")
+assert.equal(model.stateForMenu([{ text: "Lock Databases", enabled: false }]), "locked")
+assert.equal(model.stateForMenu([{ text: "&Unlock Database", enabled: true }]), "locked")
+assert.equal(model.stateForMenu([]), "running")
+
+assert.equal(model.stateLabel("stopped", true), "KeePassXC is not running")
+assert.equal(model.stateLabel("locked", true), "Database locked")
+assert.equal(model.stateLabel("running", false), "KeePassXC is not installed")
+assert.equal(model.iconForState("unlocked", true), "\uf09c")
+
+assert.equal(model.isRootTitle({ text: "KeePassXC", hasChildren: true }, 0, { title: "KeePassXC" }), true)
+assert.equal(model.isRootTitle({ text: "Lock Databases", hasChildren: false }, 1, { title: "KeePassXC" }), false)
+
+console.log("Model tests passed")
